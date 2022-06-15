@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+  labels:
+    app: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+      - name: server
+        image: tarun/server
+        resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Never
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server
+  labels:
+    app: server
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    app: server
+  type: LoadBalancer

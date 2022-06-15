@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube
+  labels:
+    app: kube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube
+  template:
+    metadata:
+      labels:
+        app: kube
+    spec:
+      containers:
+      - name: kube
+        image: tarun/helloworld
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Never
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube
+  labels:
+    app: kube
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: kube
+  type: LoadBalancer
