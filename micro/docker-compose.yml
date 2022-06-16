@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  myRabit:
+    ports:
+      - '5672:5672'
+    image: rabbitmq:3.8.7-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+      - RABBITMQ_DEFAULT_VHOST=myvhost
+    volumes:
+      - /mydata/rabbitmq:/var/lib/rabbitmq
+  mongo_db:
+    image: mongo:3.4
+    ports:
+      - '27017:27017'
+    volumes:
+      - /mydata/mongo:/data/db
+  postgres_db:
+    image: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./mydata/postgres:/var/lib/postgresql/data
+  consumer:
+    build: ./consumer
+    ports:
+      - '81:80'
+    environment:
+      - MONGODB_URI=mongodb://mongo_db:27017/consumer
+      - PORT=81
+      - RABBIT_URI=amqp://admin:admin@myRabit:5672/myvhost
+    depends_on:
+      - mongo_db
+      - myRabit
+  producer:
+    restart: on-failure
+    build: ./producer
+    ports:
+      - '80:80'
+    environment:
+      - PG_URI=postgres://postgres:postgres@postgres_db:5432/postgres
+      - PORT=80
+      - RABBIT_URI=amqp://admin:admin@myRabit:5672/myvhost
+    depends_on:
+      - postgres_db
+      - myRabit
+volumes:
+  mydata: {}
