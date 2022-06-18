@@ -11,22 +11,28 @@ const kafka = new Kafka({
     brokers: BROKERS
 })
 
-producers();
-async function producers() {
+consumer();
+async function consumer() {
 
     try {
-        const producer = kafka.producer();
+        const consumer = kafka.consumer({ "groupId": 'test' });
         console.log('connecting.....');
 
-        await producer.connect();
+        await consumer.connect();
         console.log('connected.....');
-        const partition = mgs[0] < "N" ? 0 : 1;
-        const result = await producer.send({
+
+        const result = await consumer.subscribe({
             "topic": TOPIC,
-            "messages": [
-                { "value": msg,"partition":partition }
-            ]
+            "fromBeginning": true,
+
         });
+
+        await consumer.run({
+            "eachMessage": async (result) => {
+                console.log("Recived messsage ", result.message, "on partition " + result.partition);
+            }
+        })
+
 
         console.log('send successfully.....', JSON.stringify(result));
         await producer.disconnect();
@@ -34,8 +40,4 @@ async function producers() {
     } catch (error) {
         console.log(error);
     }
-    finally {
-        process.exit(0);
-    }
-
 }
