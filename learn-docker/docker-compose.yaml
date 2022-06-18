@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  mongo_db:
+    image: mongo:3.4
+    ports:
+      - '27017:27017'
+    volumes:
+      - /mydata/mongo:/data/db
+  api:
+    build:
+      context: ./node-app
+      dockerfile: Dockerfile
+    image: node-api-img:1.0.0
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    volumes:
+      - ./node-app:/app
