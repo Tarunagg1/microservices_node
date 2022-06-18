@@ -1,8 +1,9 @@
-const amqp = require('amqplib');
+const connect = require('./connect');
+
+const QUEUE_NAME = "jobs";
 
 let channel = null;
 
-const QUEUE_NAME = "jobs";
 
 const data = {
     name: process.argv[2],
@@ -10,17 +11,6 @@ const data = {
     date: new Date().getMilliseconds()
 }
 
-
-async function connect() {
-    const RABITMQ_URL = 'amqp://localhost:5672';
-    try {
-        connection = await amqp.connect(RABITMQ_URL)
-        channel = await connection.createChannel();
-        await channel.assertQueue(QUEUE_NAME);
-    } catch (error) {
-        console.log(error);
-    }
-}
 
 
 const sentToQueue = async (data) => {
@@ -34,7 +24,7 @@ const sentToQueue = async (data) => {
 
 
 (async () => {
-    await connect()
+    channel = await connect(QUEUE_NAME);
     sentToQueue(data)
 })()
 
