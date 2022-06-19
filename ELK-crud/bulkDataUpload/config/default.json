@@ -1,0 +1,21 @@
+{
+    "elasticsearch": {
+        "url": "http://localhost:",
+        "port": "9200",
+        "elasticsearcherIndices": {
+            "COMPANY": {
+                "index": "company",
+                "type": "COMPANY",
+                "collectionName": "company"
+            }
+        }
+    },
+    "mongodb": {
+        "url": "mongodb://",
+        "username": "",
+        "password": "",
+        "localserver": "localhost:",
+        "port": "27017",
+        "databaseName": "netflix"
+    }
+}
