@@ -1,0 +1,18 @@
+{
+  "name": "cassendra",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sigv4-auth-cassandra-plugin": "^1.0.4",
+    "cassandra-driver": "^4.6.3",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  }
+}
