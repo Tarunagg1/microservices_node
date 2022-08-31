@@ -6,7 +6,7 @@ let channel = null;
 
 
 const data = {
-    name: process.argv[2],
+    name: "tarun",
     email: "tarun@gmail.com",
     date: new Date().getMilliseconds()
 }
