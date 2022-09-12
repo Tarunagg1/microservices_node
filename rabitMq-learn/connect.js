@@ -17,7 +17,7 @@ async function connect(QUEUE_NAME) {
         console.log('connected to raabitmq');
 
         channel = await connection.createChannel();
-        await channel.assertQueue(QUEUE_NAME);
+        await channel.assertQueue(QUEUE_NAME,{durable:false});
         return channel;
     } catch (error) {
         console.log(error);
