@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "publish":"node publisher.js",
-    "consume":"node consumer.js"
+    "publish": "node publisher.js",
+    "consume": "node consumer.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "amqplib": "^0.10.0",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "uuid": "^9.0.0"
   }
 }
