@@ -15,11 +15,11 @@ spec:
         app: kube
     spec:
       containers:
-      - name: kube
-        image: tarun/helloworld
-        ports:
-        - containerPort: 80
-        imagePullPolicy: Never
+        - name: kube
+          image: tarun/helloworld
+          ports:
+            - containerPort: 80
+          imagePullPolicy: Never
 
 ---
 apiVersion: v1
