@@ -1,43 +1,35 @@
-const { Kafka } = require('kafkajs')
+// https://gist.github.com/piyushgarg-dev/32cadf6420c452b66a9a6d977ade0b01   -- refs
 
-const TOPIC = 'learning';
-const CLIENTID = "myapp";
-const BROKERS = ['127.0.0.0:9092'];
+const { kafka } = require("./client.js");
 
-const msg = process.argv[2];
+const group = process.argv[2];
 
-const kafka = new Kafka({
-    clientId: CLIENTID,
-    brokers: BROKERS
-})
+async function consumer() {
+  try {
+    const consumer = kafka.consumer({ groupId: group });
+    console.log("connecting to kafka.....");
+
+    await consumer.connect();
+    console.log("connected.....");
+
+    const result = await consumer.subscribe({
+      topic: "rider-updates",
+      fromBeginning: true,
+    });
+
+    await consumer.run({
+      eachMessage: async (result) => {
+        console.log(
+          group,
+          " Recived messsage ",
+          result.message.value.toString(),
+          "on partition " + result.partition
+        );
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 consumer();
-async function consumer() {
-
-    try {
-        const consumer = kafka.consumer({ "groupId": 'test' });
-        console.log('connecting.....');
-
-        await consumer.connect();
-        console.log('connected.....');
-
-        const result = await consumer.subscribe({
-            "topic": TOPIC,
-            "fromBeginning": true,
-
-        });
-
-        await consumer.run({
-            "eachMessage": async (result) => {
-                console.log("Recived messsage ", result.message, "on partition " + result.partition);
-            }
-        })
-
-
-        console.log('send successfully.....', JSON.stringify(result));
-        await producer.disconnect();
-
-    } catch (error) {
-        console.log(error);
-    }
-}

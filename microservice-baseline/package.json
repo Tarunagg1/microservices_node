@@ -1,0 +1,24 @@
+{
+  "name": "microservice-baseline",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node .",
+    "prestart": "npm run build",
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.4.2",
+    "tslint": "^6.1.3"
+  }
+}

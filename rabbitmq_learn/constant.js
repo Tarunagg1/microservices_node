@@ -14,4 +14,5 @@ module.exports = {
     direct_routing_binding_Queue_Name:"direct_routing_binding_Queue_Name",
     topic_exchnage:"topic_exchnage",
     header_exchnage:"header_exchnage",
+    rpc_queue:"rpc_queue",
 }

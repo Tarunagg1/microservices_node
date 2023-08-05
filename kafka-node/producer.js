@@ -1,41 +1,36 @@
-const { Kafka } = require('kafkajs')
+// https://gist.github.com/piyushgarg-dev/32cadf6420c452b66a9a6d977ade0b01   -- refs
 
-const TOPIC = 'learning';
-const CLIENTID = "myapp";
-const BROKERS = ['127.0.0.0:9092'];
+const { kafka } = require("./client.js");
 
-const msg = process.argv[2];
+const riderName = process.argv[2];
+const location = process.argv[3];
 
-const kafka = new Kafka({
-    clientId: CLIENTID,
-    brokers: BROKERS
-})
+
+async function producers() {
+  try {
+    const producer = kafka.producer();
+    console.log("connection to kafka.....");
+
+    await producer.connect();
+    console.log("connected.....");
+
+    await producer.send({
+      topic: "rider-updates",
+      messages: [
+        {
+          partition: location.toLocaleLowerCase() === "north" ? 0 : 1,
+          key: "location-update",
+          value: JSON.stringify({ name: riderName, loc: location }),
+        },
+      ],
+    });
+
+    await producer.disconnect();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    process.exit(0);
+  }
+}
 
 producers();
-async function producers() {
-
-    try {
-        const producer = kafka.producer();
-        console.log('connecting.....');
-
-        await producer.connect();
-        console.log('connected.....');
-        const partition = mgs[0] < "N" ? 0 : 1;
-        const result = await producer.send({
-            "topic": TOPIC,
-            "messages": [
-                { "value": msg,"partition":partition }
-            ]
-        });
-
-        console.log('send successfully.....', JSON.stringify(result));
-        await producer.disconnect();
-
-    } catch (error) {
-        console.log(error);
-    }
-    finally {
-        process.exit(0);
-    }
-
-}

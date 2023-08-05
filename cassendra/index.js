@@ -40,6 +40,7 @@ const query = 'SELECT name, email FROM users WHERE key = ?';
 client.execute(query, ['someone'])
     .then(result => console.log('User with email %s', result.rows[0].email));
 
+
 app.listen(process.env.PORT, () => {
     console.log('server listening on port', process.env.PORT);
 })
